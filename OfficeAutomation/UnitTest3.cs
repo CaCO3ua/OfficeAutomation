@@ -2,8 +2,6 @@
 using System.Linq;
 using TestStack.White;
 using TestStack.White.UIItems;
-using TestStack.White.WindowsAPI;
-using TestStack.White.InputDevices;
 using TestStack.White.UIItems.WindowItems;
 using System.Collections.Generic;
 
@@ -37,9 +35,8 @@ namespace OfficeAutomation
         {
             clickOpenOtherDocuments();
             clickMore();
-            var openFileDialogWindowWrapper = new OpenFileDialogWrapper(mainWindow.ModalWindow("Открытие документа"));
+            var openFileDialogWindowWrapper = new OpenFileDialogWrapper(mainWindow.ModalWindow("Open"));
             openFileDialogWindowWrapper.FilePaths.EditableText = filePath;
-            openFileDialogWindowWrapper.OkButton.clickButton();
             System.Console.WriteLine(mainWindow.TitleBar);
             Assert.AreEqual(mainWindow.TitleBar, "CV_Umanets");
         }

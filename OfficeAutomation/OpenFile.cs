@@ -18,7 +18,7 @@ namespace OfficeAutomation
         }
 
         public TestStack.White.UIItems.Button CancelButton { get; private set; }
-        public OpenButton OkButton { get; private set; }
+        public IUIItem OkButton { get; private set; }
         public TestStack.White.UIItems.ListBoxItems.ComboBox FilePaths { get; private set; }
         public TestStack.White.UIItems.ListBoxItems.ComboBox FileTypeFilter { get; private set; }
         public TestStack.White.UIItems.WindowStripControls.ToolStrip AddressBar { get; private set; }
@@ -44,6 +44,7 @@ namespace OfficeAutomation
 
         private void LoadControls()
         {
+            OkButton = _window.Get(SearchCriteria.ByAutomationId("1"));
             CancelButton = _window.Get<TestStack.White.UIItems.Button>(SearchCriteria.ByClassName("Button").AndAutomationId("2"));
             FilePaths = _window.Get<TestStack.White.UIItems.ListBoxItems.ComboBox>(SearchCriteria.ByAutomationId("1148"));
             FileTypeFilter = _window.Get<TestStack.White.UIItems.ListBoxItems.ComboBox>(SearchCriteria.ByAutomationId("1136"));

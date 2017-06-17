@@ -21,7 +21,6 @@ namespace OfficeAutomation
     {
         private Application word;
         private Window mainWindow;
-        private List<Window> modalWindows;
         private Window childWindow;
         string filePath = "C:\\MainDirectory\\CV_Umanets.docx";
 
@@ -30,7 +29,6 @@ namespace OfficeAutomation
         {
             word = Application.AttachOrLaunch(new System.Diagnostics.ProcessStartInfo("winword"));
             mainWindow = word.GetWindow("Word", InitializeOption.NoCache);
-            modalWindows = mainWindow.ModalWindows();
         }
 
         [TestCleanup]
@@ -47,8 +45,7 @@ namespace OfficeAutomation
             childWindow = mainWindow.ModalWindow("Open");
             insertFilePath();
             clickOpen();
-            System.Console.WriteLine(mainWindow.TitleBar);
-            //Assert.AreEqual(mainWindow.TitleBar, "CV_Umanets");
+            Assert.IsNotNull(mainWindow);
         }
 
         private void clickOpenOtherDocuments()
