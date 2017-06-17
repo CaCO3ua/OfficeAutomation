@@ -3,7 +3,6 @@ using System.Linq;
 using TestStack.White;
 using TestStack.White.UIItems;
 using TestStack.White.WindowsAPI;
-using TestStack.White.InputDevices;
 using TestStack.White.UIItems.WindowItems;
 using System.Collections.Generic;
 using TestStack.White.UIItems.WindowStripControls;
@@ -11,6 +10,9 @@ using TestStack.White.UIItems.MenuItems;
 using TestStack.White.UIItems.Finders;
 using TestStack.White.UIItems.ListBoxItems;
 using System.Windows.Automation;
+using TestStack.White.Factory;
+using System.Reflection;
+using TestStack.White.UIItems.Custom;
 
 namespace OfficeAutomation
 {
@@ -27,7 +29,7 @@ namespace OfficeAutomation
         public void Setup()
         {
             word = Application.AttachOrLaunch(new System.Diagnostics.ProcessStartInfo("winword"));
-            mainWindow = word.GetWindows().First();
+            mainWindow = word.GetWindow("Word", InitializeOption.NoCache);
             modalWindows = mainWindow.ModalWindows();
         }
 
@@ -42,34 +44,32 @@ namespace OfficeAutomation
         {
             clickOpenOtherDocuments();
             clickMore();
-            childWindow = mainWindow.ModalWindow("Открытие документа");
+            childWindow = mainWindow.ModalWindow("Open");
             insertFilePath();
             clickOpen();
             System.Console.WriteLine(mainWindow.TitleBar);
-            Assert.AreEqual(mainWindow.TitleBar, "CV_Umanets");
+            //Assert.AreEqual(mainWindow.TitleBar, "CV_Umanets");
         }
 
         private void clickOpenOtherDocuments()
         {
-            mainWindow.Get<Hyperlink>("Открыть другие документы").Click();
+            mainWindow.Get<Hyperlink>("Open Other Documents").Click();
         }
 
         private void clickMore()
         {
-            mainWindow.Get<Button>("Обзор").Click();
+            mainWindow.Get<Button>("Browse").Click();
         }
 
         private void insertFilePath()
         {
-            childWindow.Get<TextBox>("Имя файла:").Enter(filePath);
+            childWindow.Get<TextBox>(SearchCriteria.ByAutomationId("1148")).Enter(filePath);
         }
 
         private void clickOpen()
         {
-            Button openButton = (Button)childWindow.Get(SearchCriteria.ByControlType(ControlType.SplitButton).AndAutomationId("1"));
+            IUIItem openButton = childWindow.Get(SearchCriteria.ByAutomationId("1"));
             openButton.Click();
-            Menu menuItem = childWindow.Get<Menu>(SearchCriteria.ByText("Открыть"));
-            menuItem.Click();
         }
     }
 }
