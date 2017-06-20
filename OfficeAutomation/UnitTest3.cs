@@ -1,9 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using TestStack.White;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.WindowItems;
-using System.Collections.Generic;
+using TestStack.White.Factory;
 
 namespace OfficeAutomation
 {
@@ -12,16 +11,13 @@ namespace OfficeAutomation
     {
         private Application word;
         private Window mainWindow;
-        private List<Window> modalWindows;
-        private Window childWindow;
         string filePath = "C:\\MainDirectory\\CV_Umanets.docx";
 
         [TestInitialize]
         public void Setup()
         {
             word = Application.AttachOrLaunch(new System.Diagnostics.ProcessStartInfo("winword"));
-            mainWindow = word.GetWindows().First();
-            modalWindows = mainWindow.ModalWindows();
+            mainWindow = word.GetWindow("Word", InitializeOption.NoCache);
         }
 
         [TestCleanup]
@@ -31,34 +27,27 @@ namespace OfficeAutomation
         }
 
         [TestMethod]
-        public void OpenWordPO()
+        public void OpenWordDocumentPO()
         {
-            clickOpenOtherDocuments();
-            clickMore();
+            //clickOpenOtherDocuments();
+            //clickMore();
+            var openOtherDocumentsWrapper = new OpenOtherDocumentsWrapper(mainWindow);
+            openOtherDocumentsWrapper.OpenOtherDocuments.Click();
+            openOtherDocumentsWrapper.Browse.Click();
             var openFileDialogWindowWrapper = new OpenFileDialogWrapper(mainWindow.ModalWindow("Open"));
             openFileDialogWindowWrapper.FilePaths.EditableText = filePath;
-            System.Console.WriteLine(mainWindow.TitleBar);
-            Assert.AreEqual(mainWindow.TitleBar, "CV_Umanets");
+            openFileDialogWindowWrapper.OkButton.Click();
+            Assert.IsNotNull(mainWindow);
         }
 
         private void clickOpenOtherDocuments()
         {
-            mainWindow.Get<Hyperlink>("Открыть другие документы").Click();
+            mainWindow.Get<Hyperlink>("Open Other Documents").Click();
         }
 
         private void clickMore()
         {
-            mainWindow.Get<Button>("Обзор").Click();
-        }
-
-        private void insertFilePath()
-        {
-            childWindow.Get<TextBox>("Имя файла:").Enter(filePath);
-        }
-
-        private void clickOpen()
-        {
-            childWindow.Get<Button>("1").Click();
+            mainWindow.Get<Button>("Browse").Click();
         }
     }
 }

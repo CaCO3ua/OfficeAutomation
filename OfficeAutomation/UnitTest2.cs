@@ -38,7 +38,7 @@ namespace OfficeAutomation
         }
 
         [TestMethod]
-        public void OpenWord()
+        public void OpenWordDocument()
         {
             clickOpenOtherDocuments();
             clickMore();

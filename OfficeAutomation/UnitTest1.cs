@@ -22,7 +22,7 @@ namespace OfficeAutomation
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void OpenNotepad()
         {
             var mainWindow = notepad.GetWindows().First();
             Assert.IsNotNull(mainWindow);
