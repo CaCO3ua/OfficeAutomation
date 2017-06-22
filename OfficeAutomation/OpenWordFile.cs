@@ -56,7 +56,8 @@ namespace OfficeAutomation
 
         private void clickOpen()
         {
-            childWindow.Get<IUIItem>(SearchCriteria.ByAutomationId("1")).Click();
+            IUIItem OkButton = childWindow.Get(SearchCriteria.ByClassName("Button").AndAutomationId("1"));
+            OkButton.Click();
         }
     }
 }

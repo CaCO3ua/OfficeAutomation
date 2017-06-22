@@ -45,7 +45,7 @@ namespace OfficeAutomation
 
         private void LoadControls()
         {
-            OkButton = _window.Get(SearchCriteria.ByAutomationId("1"));
+            OkButton = _window.Get(SearchCriteria.ByClassName("Button").AndAutomationId("1"));
             CancelButton = _window.Get<Button>(SearchCriteria.ByClassName("Button").AndAutomationId("2"));
             FilePaths = _window.Get<ComboBox>(SearchCriteria.ByAutomationId("1148"));
             FileTypeFilter = _window.Get<ComboBox>(SearchCriteria.ByAutomationId("1136"));
