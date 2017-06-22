@@ -1,27 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
 using TestStack.White;
 using TestStack.White.UIItems;
-using TestStack.White.WindowsAPI;
 using TestStack.White.UIItems.WindowItems;
-using System.Collections.Generic;
-using TestStack.White.UIItems.WindowStripControls;
-using TestStack.White.UIItems.MenuItems;
-using TestStack.White.UIItems.Finders;
-using TestStack.White.UIItems.ListBoxItems;
-using System.Windows.Automation;
 using TestStack.White.Factory;
-using System.Reflection;
-using TestStack.White.UIItems.Custom;
 
 namespace OfficeAutomation
 {
     [TestClass]
-    public class UnitTest2
+    public class OpenWordFilePO
     {
         private Application word;
         private Window mainWindow;
-        private Window childWindow;
         string filePath = "C:\\MainDirectory\\CV_Umanets.docx";
 
         [TestInitialize]
@@ -38,13 +27,13 @@ namespace OfficeAutomation
         }
 
         [TestMethod]
-        public void OpenWordDocument()
+        public void OpenWordDocumentPO()
         {
             clickOpenOtherDocuments();
             clickMore();
-            childWindow = mainWindow.ModalWindow("Open");
-            insertFilePath();
-            clickOpen();
+            var openWordFileDialogWindowWrapper = new OpenFileDialogWrapper(mainWindow.ModalWindow("Open"));
+            openWordFileDialogWindowWrapper.FilePaths.EditableText = filePath;
+            openWordFileDialogWindowWrapper.OkButton.Click();
             Assert.IsNotNull(mainWindow);
         }
 
@@ -56,17 +45,6 @@ namespace OfficeAutomation
         private void clickMore()
         {
             mainWindow.Get<Button>("Browse").Click();
-        }
-
-        private void insertFilePath()
-        {
-            childWindow.Get<TextBox>(SearchCriteria.ByAutomationId("1148")).Enter(filePath);
-        }
-
-        private void clickOpen()
-        {
-            IUIItem openButton = childWindow.Get(SearchCriteria.ByAutomationId("1"));
-            openButton.Click();
         }
     }
 }

@@ -2,15 +2,17 @@
 using TestStack.White;
 using TestStack.White.UIItems;
 using TestStack.White.UIItems.WindowItems;
+using TestStack.White.UIItems.Finders;
 using TestStack.White.Factory;
 
 namespace OfficeAutomation
 {
     [TestClass]
-    public class UnitTest3
+    public class OpenWordFile
     {
         private Application word;
         private Window mainWindow;
+        private Window childWindow;
         string filePath = "C:\\MainDirectory\\CV_Umanets.docx";
 
         [TestInitialize]
@@ -27,16 +29,13 @@ namespace OfficeAutomation
         }
 
         [TestMethod]
-        public void OpenWordDocumentPO()
+        public void OpenWordDocument()
         {
-            //clickOpenOtherDocuments();
-            //clickMore();
-            var openOtherDocumentsWrapper = new OpenOtherDocumentsWrapper(mainWindow);
-            openOtherDocumentsWrapper.OpenOtherDocuments.Click();
-            openOtherDocumentsWrapper.Browse.Click();
-            var openFileDialogWindowWrapper = new OpenFileDialogWrapper(mainWindow.ModalWindow("Open"));
-            openFileDialogWindowWrapper.FilePaths.EditableText = filePath;
-            openFileDialogWindowWrapper.OkButton.Click();
+            clickOpenOtherDocuments();
+            clickMore();
+            childWindow = mainWindow.ModalWindow("Open");
+            insertFilePath();
+            clickOpen();
             Assert.IsNotNull(mainWindow);
         }
 
@@ -48,6 +47,16 @@ namespace OfficeAutomation
         private void clickMore()
         {
             mainWindow.Get<Button>("Browse").Click();
+        }
+
+        private void insertFilePath()
+        {
+            childWindow.Get<TextBox>(SearchCriteria.ByAutomationId("1148")).Enter(filePath);
+        }
+
+        private void clickOpen()
+        {
+            childWindow.Get<IUIItem>(SearchCriteria.ByAutomationId("1")).Click();
         }
     }
 }

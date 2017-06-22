@@ -5,7 +5,7 @@ using System.Linq;
 namespace OfficeAutomation
 {
     [TestClass]
-    public class UnitTest1
+    public class OpenNotepad
     {
         private Application notepad;
 
@@ -22,7 +22,7 @@ namespace OfficeAutomation
         }
 
         [TestMethod]
-        public void OpenNotepad()
+        public void OpenNotepadWindow()
         {
             var mainWindow = notepad.GetWindows().First();
             Assert.IsNotNull(mainWindow);
